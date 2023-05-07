@@ -1,0 +1,33 @@
+//////////////////////////////////////////////////////////
+
+<script language="php"> </script>   OFF -> Script PHP       
+<?php ?>                             ON -> Super tag PHP
+<? ?>                                ON -> Short Open tag
+<% %>                               OFF -> ASP tag
+<?=print ""?>                         ON -> Short tag PHP
+
+//////////////////////////////////////////////////////////
+
+-> Regras para nomes identificadores:
+
+1 - Variáveis sempre começam om o símbolo $
+2 - O segundo Pode ser letra ou o símbolo _
+3 - Aceita caracteres[a-z], [A-Z], [0-9] e [_]
+4 - Aceita carateres da tabela ASCII a partir de 128
+5 - Aceita caracteres acentuados como á, õ, ç
+6 - A linguagem é case sensitive em relação aos nomes
+7 - Nomes especiais como $this não podem ser usados
+
+//////////////////////////////////////////////////////////
+
+-> Recomendações para dar nomes:
+
+1 - Tente dar nomes claros e de fácil identificação
+2 - Evite nomes muito curto ou muito longos
+3 - Defina um padrão e siga em todo o projeto
+4 - Para variáveis, dê preferencia a letras minúsculas
+5 - Para constantes,dê preferência a letras maiúsculas
+6 - Use camelCase pra métodos e atributos
+7 - Use SNAKE_CASE para nomear costantes
+
+//////////////////////////////////////////////////////////
