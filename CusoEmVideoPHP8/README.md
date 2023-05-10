@@ -15,9 +15,9 @@
 
 - Variaveis Super Globais:
 
-$_GET     = _
+$_GET     = Iformações de uma requisição do tipo get do protocolo http 
 
-$_POST    =
+$_POST    = Iformações de uma requisição do tipo get do protocolo http 
 
 $_REQUEST = União das Super Globais $_GET $_POST $_COOKIES
 
