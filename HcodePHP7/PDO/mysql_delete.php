@@ -9,19 +9,11 @@
     $conn = new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASS);
 
     # Prepara Query que sera executado no Banco:
-    $stmt = $conn->prepare('UPDATE tb_usuarios SET desLogin=:LOGIN, desSenha=:PASSW WHERE id_usuario=:ID;');
+    $stmt = $conn->prepare('DELETE FROM tb_usuarios WHERE id_usuario=:ID;');
 
     # Variaveis de Valor:
-    $LOGIN = 'User';
-    $PASSW = 'Teste#$1010';
     $ID = 2;
-
-    # Liga ':LOGIN' ao valor $LOGIN:
-    $stmt->bindParam(':LOGIN', $LOGIN);
-
-    # Liga ':PASSW' ao valor $PASSW:
-    $stmt->bindParam(':PASSW', $PASSW);
-
+    
     # Liga ':ID' ao valor $ID:
     $stmt->bindParam(':ID', $ID);
 
@@ -29,5 +21,5 @@
     $stmt->execute();
 
     # MSG de Confirmação:
-    print("UPDATE Realizado ...");
+    print("DELETE Realizado ...");
 ?>
