@@ -17,6 +17,24 @@
     //echo json_encode($search);
 
     # Carrega dados de um usuario autenticando:
-    $login = $root->login('ADMIN', 'ADMIN');
-    echo $root;
+    //$login = $root->login('ADMIN', 'ADMIN');
+    //echo $root;
+
+    # Cadastra um novo usuario no banco:
+    //$aluno = new Usuario();
+    //$aluno->setDesLogin('aluno000');
+    //$aluno->setDesSenha('aluno$@2023');
+    //$aluno->insert();
+    //echo $aluno;
+
+    # Cadastra um novo usuario no banco:
+    //$aluno = new Usuario('aluno001', 'aluno$%2023');
+    //$aluno->insert();
+    //echo $aluno;
+
+    # Edita um cadastro no banco:
+    $usuario = new Usuario();
+    $usuario->loadById(4);
+    $usuario->update('professor', 'Mateus22/10/94');
+    echo $usuario;
 ?>

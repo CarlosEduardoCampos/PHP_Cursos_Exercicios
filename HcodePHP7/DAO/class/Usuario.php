@@ -6,6 +6,13 @@
         private $des_senha;
         private $dt_cadastro;
 
+        # Metodo costrutor iniciando login  e senha:
+        public function __construct($login=null, $password=null)
+        {
+            $this->des_login = $login;
+            $this->des_senha = $password;
+        }
+
         # Metodos GET_&_SET:
         # $id_usuario
         public function getIdUsuario():int
@@ -43,14 +50,27 @@
         {
             $this->dt_cadastro = $dt_cad;
         }
-
+        # Inicializa as variaveis um usuario com os dados do banco:
+        /**
+         * Recebe como parametro primeira linha que foi retornada:
+         * $data = $resuts[0];
+        */
+        public function setData($data)
+        {
+            # Inicia o usuario com os dados do banco:
+            $this->setIdUsuario($data['id_usuario']);
+            $this->setDesLogin($data['desLogin']);
+            $this->setDesSenha($data['desSenha']);
+            # Formata o data que foi recebida do banco: new DateTime($server_data);
+            $this->setDtCadastro(new DateTime($data['dt_cadastro']));
+        }
         # Carrega um usuario pelo id_usuario:
         public function loadById($id)
         {
             # Inicia o Banco de dados:
             $sql = new SQL();
 
-            # Faz um SELECT no banco:
+            # Executa a query Select no Banco e retorna os dados de usuarios:
             $results = $sql->dbSelect('SELECT* FROM tb_usuarios WhERE id_usuario=:ID', array(
                 ':ID' => $id
             ));
@@ -58,16 +78,8 @@
             # Testa se o SELECT retornou alguma informação
             if ($results[0] > 0)
             {
-                # Recebe a primeira linha que foi retornada:
-                $row = $results[0];
-
                 # Inicia o usuario com os dados do banco:
-                $this->setIdUsuario($row['id_usuario']);
-                $this->setDesLogin($row['desLogin']);
-                $this->setDesSenha($row['desSenha']);
-
-                # Formata o data que foi recebida do banco: new DateTime($server_data);
-                $this->setDtCadastro(new DateTime($row['dt_cadastro']));
+                $this->setData($results[0]);
             }
         }
         # Metodo varrega a lista de usuarios cadastrados:
@@ -76,7 +88,7 @@
             # Inicia o banco de dados:
             $sql = new SQL();
 
-            # Faz um Select no Banco e retorna as os dados de usuarios:
+            # Executa a query Select no Banco e retorna os dados de usuarios:
             return $sql->dbSelect('SELECT id_usuario, desLogin AS login FROM tb_usuarios ORDER BY login;');
         }
         # Busca um usuario cadastrado no banco pelo login:
@@ -85,7 +97,7 @@
             # Inicia o Banco de Dados:
             $sql = new SQL();
 
-            # Faz um Select no Banco e retorna os dados de usuarios:
+            # Executa a query Select no Banco e retorna os dados de usuarios:
             return $sql->dbSelect('SELECT id_usuario, desLogin as login FROM tb_usuarios WHERE desLogin LIKE :LOGIN;', array(
                 ':LOGIN'=>"%$login%"
             ));
@@ -96,6 +108,7 @@
             # Inicia o banco de dados:
             $sql = new SQL();
 
+            # Executa a query Select no Banco e retorna os dados de usuarios:
             $results = $sql->dbSelect('SELECT*FROM tb_usuarios WHERE desLogin=:LOGIN AND desSenha=:SENHA;', array(
                 ':LOGIN'=>$login,
                 ':SENHA'=>$password
@@ -105,20 +118,51 @@
             $existe_usuario = (count($results)>0);
             if($existe_usuario)
             {
-                # Recebe a primeira linha que foi retornada:
-                $row = $results[0];
-
                 # Inicia o usuario com os dados do banco:
-                $this->setIdUsuario($row['id_usuario']);
-                $this->setDesLogin($row['desLogin']);
-                $this->setDesSenha($row['desSenha']);
-
-                # Formata o data que foi recebida do banco: new DateTime($server_data);
-                $this->setDtCadastro(new DateTime($row['dt_cadastro']));
+                $this->setData($results[0]);
             }
             else{
                 throw new Exception('Login e/ou senha inválidos.');
             }
+        }
+        # Metodo Cadastra um usuario no banco:
+        public function insert()
+        {
+            # Inicia o Banco de Dados:
+            $sql = new SQL();
+            
+            # Executa uma PROCEDURE no banco com os dados de usuario e retorna o ultimo cadastro:
+            $results=$sql->dbSelect('CALL sp_usuarios_insert(:LOGIN, :PASSWORD)', array(
+                ':LOGIN'=>$this->getDesLogin(),
+                ':PASSWORD'=>$this->getDesSenha()
+            ));
+
+            # Testa se o SELECT retornou alguma informação:
+            $existe_usuario = (count($results)>0);
+            if($existe_usuario)
+            {
+                # Inicia o usuario com os dados do banco:
+                $this->setData($results[0]);
+            }
+            else{
+                throw new Exception('Login e/ou senha inválidos.');
+            }
+        }
+        public function update($login, $password)
+        {
+            # Inicia os dados do usuario:
+            $this->setDesLogin($login);
+            $this->setDesSenha($password);
+
+            # Inicia o banco de dados:
+            $sql = new SQL();
+
+            # Executa uma query de UPDATE no banco:
+            $sql->dbQuery('UPDATE tb_usuarios SET desLogin=:LOGIN, desSenha=:SENHA WHERE id_usuario= :ID;',array(
+                ':LOGIN'=>$this->getDesLogin(),
+                ':SENHA'=>$this->getDesSenha(),
+                ':ID'=>$this->getIdUsuario()
+            ));
         }
         # Metodo de retorno padrão:
         public function __toString()
