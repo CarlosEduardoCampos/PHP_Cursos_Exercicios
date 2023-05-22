@@ -164,6 +164,23 @@
                 ':ID'=>$this->getIdUsuario()
             ));
         }
+        # Metodo apaga um cadasto do banco:
+        public function delete()
+        {
+            # Inicia o banco de dados:
+            $sql = new SQL();
+
+            # Executa a query DELETE no banco de dados:
+            $sql->dbQuery('DELETE FROM tb_usuarios WHERE id_usuario=:ID;', array(
+                ':ID'=>$this->getIdUsuario()
+            ));
+
+            # Limpa os dados do usuario carrgado:
+            $this->setIdUsuario(0);
+            $this->setDesLogin('');
+            $this->setDesSenha('');
+            $this->setDtCadastro(new DateTime());
+        }
         # Metodo de retorno padrão:
         public function __toString()
         {

@@ -2,7 +2,7 @@
     require_once('config.php');
 
     # Inicia um novo Usuario:
-    $root = new Usuario();
+    //$root = new Usuario();
 
     # Carrega dados um usuario:
     // $root->loadById(1);
@@ -33,8 +33,14 @@
     //echo $aluno;
 
     # Edita um cadastro no banco:
+    //$usuario = new Usuario();
+    //$usuario->loadById(4);
+    //$usuario->update('professor', 'Mateus22/10/94');
+    //echo $usuario;
+
+    # Deletar um cadastro do banco:
     $usuario = new Usuario();
-    $usuario->loadById(4);
-    $usuario->update('professor', 'Mateus22/10/94');
+    $usuario->loadById(5);
+    $usuario->delete();
     echo $usuario;
 ?>

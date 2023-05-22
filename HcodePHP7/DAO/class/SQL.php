@@ -7,13 +7,13 @@
         public function __construct()
         {
             # Variaveis de Conexão com Banco:
-            define('DB_NAME', 'php7');
-            define('DB_HOST', 'localhost');
-            define('DB_USER', 'root');
-            define('DB_PASS', 'testeBanco123');
+            $DB_NAME = '';
+            $DB_HOST = '';
+            $DB_USER = '';
+            $DB_PASS = '';
 
             # Conexão com Banco:
-            $this->conn = new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASS);
+            $this->conn = new PDO("mysql:host=$DB_HOST;dbname=$DB_NAME", $DB_USER, $DB_PASS);
         }
 
         # Metodo Liga $key ao valor $value de um array:
