@@ -51,7 +51,7 @@
             $sql = new SQL();
 
             # Faz um SELECT no banco:
-            $results = $sql->dbSelect('SELECT * FROM tb_usuarios WhERE id_usuario = :ID', array(
+            $results = $sql->dbSelect('SELECT* FROM tb_usuarios WhERE id_usuario=:ID', array(
                 ':ID' => $id
             ));
 
@@ -70,7 +70,57 @@
                 $this->setDtCadastro(new DateTime($row['dt_cadastro']));
             }
         }
-        # Função de retorno padrão:
+        # Metodo varrega a lista de usuarios cadastrados:
+        public static function getList()
+        {
+            # Inicia o banco de dados:
+            $sql = new SQL();
+
+            # Faz um Select no Banco e retorna as os dados de usuarios:
+            return $sql->dbSelect('SELECT id_usuario, desLogin AS login FROM tb_usuarios ORDER BY login;');
+        }
+        # Busca um usuario cadastrado no banco pelo login:
+        public static function search($login)
+        {
+            # Inicia o Banco de Dados:
+            $sql = new SQL();
+
+            # Faz um Select no Banco e retorna os dados de usuarios:
+            return $sql->dbSelect('SELECT id_usuario, desLogin as login FROM tb_usuarios WHERE desLogin LIKE :LOGIN;', array(
+                ':LOGIN'=>"%$login%"
+            ));
+        }
+        # Busca um usuario autenticado:
+        public function login($login, $password)
+        {
+            # Inicia o banco de dados:
+            $sql = new SQL();
+
+            $results = $sql->dbSelect('SELECT*FROM tb_usuarios WHERE desLogin=:LOGIN AND desSenha=:SENHA;', array(
+                ':LOGIN'=>$login,
+                ':SENHA'=>$password
+            ));
+
+            # Testa se o SELECT retornou alguma informação:
+            $existe_usuario = (count($results)>0);
+            if($existe_usuario)
+            {
+                # Recebe a primeira linha que foi retornada:
+                $row = $results[0];
+
+                # Inicia o usuario com os dados do banco:
+                $this->setIdUsuario($row['id_usuario']);
+                $this->setDesLogin($row['desLogin']);
+                $this->setDesSenha($row['desSenha']);
+
+                # Formata o data que foi recebida do banco: new DateTime($server_data);
+                $this->setDtCadastro(new DateTime($row['dt_cadastro']));
+            }
+            else{
+                throw new Exception('Login e/ou senha inválidos.');
+            }
+        }
+        # Metodo de retorno padrão:
         public function __toString()
         {
             return json_encode(array(

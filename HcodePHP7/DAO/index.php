@@ -1,20 +1,22 @@
 <?php 
     require_once('config.php');
-    /*
-    # Inicia classe do Banco de Dados:
-    $sql = new SQL();
-
-    # Seleciona os usurios que estão cadastrados no banco de dados:
-    $usuarios = $sql->dbSelect('SELECT * FROM tb_usuarios;');
-
-    # Mostra no formato json os usuarios cadastrados no banco:
-    echo json_encode($usuarios);
-    */
 
     # Inicia um novo Usuario:
     $root = new Usuario();
 
-    $root->loadById(1);
+    # Carrega dados um usuario:
+    // $root->loadById(1);
+    // echo $root;
 
+    # Carrega uma lista com os dados de usuários:
+    //$lista = $root::getList();
+    //echo json_encode($lista);
+
+    # Carrega uma lista de usuários buscando pelo login:
+    //$search = $root::search("ad");
+    //echo json_encode($search);
+
+    # Carrega dados de um usuario autenticando:
+    $login = $root->login('ADMIN', 'ADMIN');
     echo $root;
 ?>
